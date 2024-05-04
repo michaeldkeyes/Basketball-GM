@@ -1,5 +1,5 @@
 <template>
   <div>
-    <div class="hello">Hello, World!</div>
+    <div class="p-4">Hello, World!</div>
   </div>
 </template>
