@@ -26,17 +26,18 @@ defineProps<Props>();
         <template v-for="(player, index) in team.players" :key="index">
           <tr :class="index % 2 === 0 ? 'bg-slate-900' : 'bg-gray-800'">
             <td class="px-4 py-2">{{ player.name }}</td>
-            <td class="px-4 py-2">{{ player.fieldGoalsMade }}</td>
-            <td class="px-4 py-2">{{ player.fieldGoalAttempts }}</td>
+            <td class="px-4 py-2">{{ player.stats.fieldGoalsMade }}</td>
+            <td class="px-4 py-2">{{ player.stats.fieldGoalAttempts }}</td>
             <td class="px-4 py-2">
               {{
                 (
-                  (player.fieldGoalsMade / player.fieldGoalAttempts) *
+                  (player.stats.fieldGoalsMade /
+                    player.stats.fieldGoalAttempts) *
                   100
                 ).toFixed(1)
               }}%
             </td>
-            <td class="px-4 py-2">{{ player.points }}</td>
+            <td class="px-4 py-2">{{ player.stats.points }}</td>
           </tr>
         </template>
       </tbody>

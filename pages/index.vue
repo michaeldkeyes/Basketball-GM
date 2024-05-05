@@ -22,11 +22,11 @@ const result = ref<GameResults | null>(null);
         </li>
         <li class="flex">
           <input type="checkbox" />
-          <p>Team Stats Component</p>
+          <p>Gametime & shotclock</p>
         </li>
         <li class="flex">
           <input type="checkbox" />
-          <p>Gametime & shotclock</p>
+          <p>Team points scored per quarter table</p>
         </li>
         <li class="flex">
           <input type="checkbox" />
@@ -69,10 +69,10 @@ const result = ref<GameResults | null>(null);
       <p v-if="result === null">No games have been simulated yet</p>
       <div v-else class="flex justify-center">
         <h2>{{ result.team1.name }} &nbsp;</h2>
-        <h2>{{ result.team1.score }} &nbsp;</h2>
+        <h2>{{ result.team1.stats.points }} &nbsp;</h2>
         <span> - &nbsp; </span>
         <h2>{{ result.team2.name }} &nbsp;</h2>
-        <h2>{{ result.team2.score }}</h2>
+        <h2>{{ result.team2.stats.points }}</h2>
       </div>
     </div>
 
