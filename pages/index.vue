@@ -68,18 +68,22 @@ const result = ref<GameResults | null>(null);
     <div class="mb-3">
       <p v-if="result === null">No games have been simulated yet</p>
       <div v-else class="flex justify-center">
-        <h2>{{ result.team1.name }} &nbsp;</h2>
-        <h2>{{ result.team1.stats.points }} &nbsp;</h2>
+        <h2>{{ result.homeTeam.name }} &nbsp;</h2>
+        <h2>{{ result.homeTeam.stats.points }} &nbsp;</h2>
         <span> - &nbsp; </span>
-        <h2>{{ result.team2.name }} &nbsp;</h2>
-        <h2>{{ result.team2.stats.points }}</h2>
+        <h2>{{ result.awayTeam.name }} &nbsp;</h2>
+        <h2>{{ result.awayTeam.stats.points }}</h2>
       </div>
     </div>
 
-    <div v-if="result !== null" class="m-auto w-11/12 text-center">
-      <StatsTable :team="result.team1" />
+    <div v-if="result !== null">
+      <TeamPPQTable :result="result" />
+    </div>
 
-      <StatsTable :team="result.team2" />
+    <div v-if="result !== null" class="m-auto w-11/12 text-center">
+      <StatsTable :team="result.homeTeam" />
+
+      <StatsTable :team="result.awayTeam" />
     </div>
   </div>
 </template>

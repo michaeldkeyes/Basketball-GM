@@ -9,6 +9,11 @@ interface Stats {
   fieldGoalsMade: number;
 }
 
+// interface TeamStats implements Stats
+interface TeamStats extends Stats {
+  pointsPerQuarter: number[];
+}
+
 // write a player interface with the following properties
 // name: string
 // shootingPercentage: number
@@ -25,15 +30,15 @@ interface Player {
 export interface Team {
   name: string;
   players: Player[];
-  stats: Stats;
+  stats: TeamStats;
 }
 
 // write a game results interface with the following properties
 // teams: Team[]
 // winner: string
 export interface GameResults {
-  team1: Team;
-  team2: Team;
+  homeTeam: Team;
+  awayTeam: Team;
 }
 
 export function simulateGame(): GameResults {
@@ -45,7 +50,7 @@ export function simulateGame(): GameResults {
   // add 2 to the team's score
   // return the team with the most points
 
-  const team1: Team = {
+  const homeTeam: Team = {
     name: "Earthquakes",
     players: [
       {
@@ -98,10 +103,11 @@ export function simulateGame(): GameResults {
       points: 0,
       fieldGoalAttempts: 0,
       fieldGoalsMade: 0,
+      pointsPerQuarter: [0, 0, 0, 0],
     },
   };
 
-  const team2: Team = {
+  const awayTeam: Team = {
     name: "Liberty",
     players: [
       {
@@ -154,13 +160,14 @@ export function simulateGame(): GameResults {
       points: 0,
       fieldGoalAttempts: 0,
       fieldGoalsMade: 0,
+      pointsPerQuarter: [0, 0, 0, 0],
     },
   };
 
   let quarter = 1;
   let gameClock = 720;
 
-  let offense = team1;
+  let offense = homeTeam;
 
   // simulate the game clock
   while (quarter <= 4) {
@@ -180,9 +187,11 @@ export function simulateGame(): GameResults {
         player.stats.points += 2;
         player.stats.fieldGoalsMade++;
         offense.stats.fieldGoalsMade++;
+
+        offense.stats.pointsPerQuarter[quarter - 1] += 2;
       }
 
-      offense = offense === team1 ? team2 : team1;
+      offense = offense === homeTeam ? awayTeam : homeTeam;
     }
 
     gameClock = 720;
@@ -190,5 +199,5 @@ export function simulateGame(): GameResults {
   }
 
   // return a new GameResults object with the two teams
-  return { team1, team2 };
+  return { homeTeam, awayTeam };
 }
