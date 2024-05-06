@@ -34,11 +34,7 @@ const result = ref<GameResults | null>(null);
         </li>
         <li class="flex">
           <input type="checkbox" />
-          <p>Player positions</p>
-        </li>
-        <li class="flex">
-          <input type="checkbox" />
-          <p>Shot selection</p>
+          <p>Player positions & Shot selection</p>
         </li>
         <li class="flex">
           <input type="checkbox" />

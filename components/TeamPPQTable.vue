@@ -7,17 +7,20 @@ interface Props {
 }
 
 defineProps<Props>();
-
-const tableHeaders = ["", "Q1", "Q2", "Q3", "Q4", "F"];
 </script>
 
 <template>
   <table class="m-auto mb-5 border-y border-solid border-black text-center">
     <thead>
       <tr class="border-y border-solid border-black">
-        <th v-for="(header, index) in tableHeaders" :key="index">
-          {{ header }}
+        <th />
+        <th
+          v-for="(points, index) in result.homeTeam.stats.pointsPerQuarter"
+          :key="index"
+        >
+          Q{{ index + 1 }}
         </th>
+        <th>F</th>
       </tr>
     </thead>
     <tbody>
