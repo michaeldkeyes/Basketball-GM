@@ -38,6 +38,14 @@ const result = ref<GameResults | null>(null);
         </li>
         <li class="flex">
           <input type="checkbox" />
+          <p>Show team totals at bottom of table</p>
+        </li>
+        <li class="flex">
+          <input type="checkbox" />
+          <p>Choose shooter based on best overall scorer</p>
+        </li>
+        <li class="flex">
+          <input type="checkbox" />
           <p>Rebounding</p>
         </li>
         <li class="flex">

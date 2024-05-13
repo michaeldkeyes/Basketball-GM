@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
 import type { Team } from "~/game/gameSim";
 
 interface Props {
