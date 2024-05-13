@@ -23,10 +23,10 @@ export default [
   // SF
   {
     position: Position.SF,
-    twoPointShootingPercentageMin: 350,
+    twoPointShootingPercentageMin: 400,
     twoPointShootingPercentageMax: 600,
     threePointShootingPercentageMin: 250,
-    threePointShootingPercentageMax: 450,
+    threePointShootingPercentageMax: 400,
     threePointTendencyMin: 200,
     threePointTendencyMax: 500,
   },
@@ -35,7 +35,7 @@ export default [
     position: Position.PF,
     twoPointShootingPercentageMin: 400,
     twoPointShootingPercentageMax: 650,
-    threePointShootingPercentageMin: 200,
+    threePointShootingPercentageMin: 250,
     threePointShootingPercentageMax: 350,
     threePointTendencyMin: 0,
     threePointTendencyMax: 100,

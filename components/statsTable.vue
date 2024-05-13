@@ -13,8 +13,8 @@ const headers = ["Player", "FG", "FG%", "3P", "Points"];
 <template>
   <div>
     <h2>{{ team.name }}</h2>
-    <table class="w-full border-2 border-solid border-black">
-      <thead class="border-b border-solid border-black">
+    <table class="mb-5 w-full">
+      <thead class="border-y-2 border-solid border-black">
         <tr>
           <th
             v-for="header in headers"
@@ -25,7 +25,7 @@ const headers = ["Player", "FG", "FG%", "3P", "Points"];
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="border-y-2 border-solid border-black">
         <template v-for="(player, index) in team.players" :key="index">
           <tr :class="index % 2 === 0 ? 'bg-slate-900' : 'bg-gray-800'">
             <td class="px-4 py-2">{{ player.name }}</td>
@@ -50,6 +50,61 @@ const headers = ["Player", "FG", "FG%", "3P", "Points"];
           </tr>
         </template>
       </tbody>
+      <tfoot class="bg-slate-800">
+        <tr>
+          <td class="px-4 py-2">Totals</td>
+          <td class="px-4 py-2">
+            {{
+              team.players.reduce(
+                (acc, player) => acc + player.stats.fieldGoalsMade,
+                0,
+              )
+            }}
+            -
+            {{
+              team.players.reduce(
+                (acc, player) => acc + player.stats.fieldGoalAttempts,
+                0,
+              )
+            }}
+          </td>
+          <td class="px-4 py-2">
+            {{
+              (
+                (team.players.reduce(
+                  (acc, player) => acc + player.stats.fieldGoalsMade,
+                  0,
+                ) /
+                  team.players.reduce(
+                    (acc, player) => acc + player.stats.fieldGoalAttempts,
+                    0,
+                  )) *
+                100
+              ).toFixed(1)
+            }}%
+          </td>
+          <td class="px-4 py-2">
+            {{
+              team.players.reduce(
+                (acc, player) => acc + player.stats.threePointMakes,
+                0,
+              )
+            }}
+            -
+            {{
+              team.players.reduce(
+                (acc, player) => acc + player.stats.threePointAttempts,
+                0,
+              )
+            }}
+          </td>
+          <td class="px-4 py-2">
+            {{
+              team.players.reduce((acc, player) => acc + player.stats.points, 0)
+            }}
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </template>
