@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Team } from "@/game/gameSim";
+import type { Team } from "~/game/types/team.interface";
 
 interface Props {
   team: Team;
@@ -7,7 +7,7 @@ interface Props {
 
 defineProps<Props>();
 
-const headers = ["Player", "FG", "FG%", "3P", "Points"];
+const headers = ["Player", "Position", "FG", "FG%", "3P", "Points"];
 </script>
 
 <template>
@@ -29,9 +29,12 @@ const headers = ["Player", "FG", "FG%", "3P", "Points"];
         <template v-for="(player, index) in team.players" :key="index">
           <tr :class="index % 2 === 0 ? 'bg-slate-900' : 'bg-gray-800'">
             <td class="px-4 py-2">{{ player.name }}</td>
+            <td class="px-4 py-2">{{ player.position }}</td>
             <td class="px-4 py-2">
               {{ player.stats.fieldGoalsMade }} -
-              {{ player.stats.fieldGoalAttempts }}
+              {{ player.stats.fieldGoalAttempts }} ({{
+                player.attributes.twoPointShootingPercentage / 10
+              }})
             </td>
             <td class="px-4 py-2">
               {{
@@ -44,7 +47,9 @@ const headers = ["Player", "FG", "FG%", "3P", "Points"];
             </td>
             <td class="px-4 py-2">
               {{ player.stats.threePointMakes }} -
-              {{ player.stats.threePointAttempts }}
+              {{ player.stats.threePointAttempts }} ({{
+                player.attributes.threePointShootingPercentage / 10
+              }})
             </td>
             <td class="px-4 py-2">{{ player.stats.points }}</td>
           </tr>
@@ -53,6 +58,7 @@ const headers = ["Player", "FG", "FG%", "3P", "Points"];
       <tfoot class="bg-slate-800">
         <tr>
           <td class="px-4 py-2">Totals</td>
+          <td class="px-4 py-2" />
           <td class="px-4 py-2">
             {{
               team.players.reduce(

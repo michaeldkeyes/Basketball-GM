@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Team } from "~/game/gameSim";
+import type { Team } from "~/game/types/team.interface";
 
 interface Props {
   team: Team;

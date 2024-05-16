@@ -1,85 +1,10 @@
-import type { Position } from "./positions.enum";
-import positionAttributes from "./positionAttributes";
-
-function getRandomNumberBetween(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-interface Stats {
-  points: number;
-  fieldGoalAttempts: number;
-  fieldGoalsMade: number;
-  threePointAttempts: number;
-  threePointMakes: number;
-}
-
-interface Attributes {
-  twoPointShootingPercentage: number;
-  threePointShootingPercentage: number;
-  twoPointTendency: number;
-  threePointTendency: number;
-}
-
-interface TeamStats extends Stats {
-  pointsPerQuarter: number[];
-}
-
-interface Player {
-  name: string;
-  position: Position;
-  attributes: Attributes;
-  stats: Stats;
-}
-
-export interface Team {
-  name: string;
-  players: Player[];
-  stats: TeamStats;
-}
+import { createPlayers } from "./createPlayers";
+import type { Team } from "./types/team.interface";
+import { getRandomNumber, getRandomNumberBetween } from "./utils/random";
 
 export interface GameResults {
   homeTeam: Team;
   awayTeam: Team;
-}
-
-function createPlayers(): Player[] {
-  const players: Player[] = [];
-
-  positionAttributes.forEach((position) => {
-    const player: Player = {
-      name: "player" + Math.floor(Math.random() * 1000),
-      position: position.position,
-      attributes: {
-        twoPointShootingPercentage: getRandomNumberBetween(
-          position.twoPointShootingPercentageMin,
-          position.twoPointShootingPercentageMax,
-        ),
-        threePointShootingPercentage: getRandomNumberBetween(
-          position.threePointShootingPercentageMin,
-          position.threePointShootingPercentageMax,
-        ),
-        twoPointTendency: 0,
-        threePointTendency: getRandomNumberBetween(
-          position.threePointTendencyMin,
-          position.threePointTendencyMax,
-        ),
-      },
-      stats: {
-        points: 0,
-        fieldGoalAttempts: 0,
-        fieldGoalsMade: 0,
-        threePointAttempts: 0,
-        threePointMakes: 0,
-      },
-    };
-
-    player.attributes.twoPointTendency =
-      1000 - player.attributes.threePointTendency;
-
-    players.push(player);
-  });
-
-  return players;
 }
 
 export function simulateGame(): GameResults {
@@ -109,6 +34,28 @@ export function simulateGame(): GameResults {
     },
   };
 
+  // sort players by scoring attribute
+  homeTeam.players.sort((a, b) => b.attributes.scoring - a.attributes.scoring);
+  awayTeam.players.sort((a, b) => b.attributes.scoring - a.attributes.scoring);
+
+  let usageModifier = 0.28;
+
+  homeTeam.players.map((player) => {
+    player.attributes.scoring = Math.round(
+      player.attributes.scoring * usageModifier,
+    );
+    usageModifier -= 0.04;
+  });
+
+  usageModifier = 0.28;
+
+  awayTeam.players.map((player) => {
+    player.attributes.scoring = Math.round(
+      player.attributes.scoring * usageModifier,
+    );
+    usageModifier -= 0.04;
+  });
+
   let quarter = 1;
   let gameClock = 720;
 
@@ -134,15 +81,32 @@ export function simulateGame(): GameResults {
 }
 
 function simPossession(offense: Team, quarter: number): void {
-  const playerIndex = Math.floor(Math.random() * 5);
-  const player = offense.players[playerIndex];
+  let totalScoring = 0;
+  const players = offense.players;
+  for (let i = 0; i < players.length; i++) {
+    totalScoring += players[i].attributes.scoring;
+  }
+
+  const rng = getRandomNumber(totalScoring);
+
+  let player = players[0];
+
+  let min = 0;
+  let max = 0;
+  for (let i = 0; i < players.length; i++) {
+    min = max;
+    max = players[i].attributes.scoring + min;
+    if (rng < max && rng >= min) {
+      player = players[i];
+    }
+  }
 
   player.stats.fieldGoalAttempts++;
   offense.stats.fieldGoalAttempts++;
 
   if (getRandomNumberBetween(0, 1000) < player.attributes.twoPointTendency) {
     if (
-      getRandomNumberBetween(0, 1000) <
+      getRandomNumberBetween(0, 1000) <=
       player.attributes.twoPointShootingPercentage
     ) {
       offense.stats.points += 2;
@@ -157,7 +121,7 @@ function simPossession(offense: Team, quarter: number): void {
     offense.stats.threePointAttempts++;
 
     if (
-      getRandomNumberBetween(0, 1000) <
+      getRandomNumberBetween(0, 1000) <=
       player.attributes.threePointShootingPercentage
     ) {
       offense.stats.points += 3;
