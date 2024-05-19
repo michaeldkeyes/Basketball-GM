@@ -1,4 +1,5 @@
 import { createPlayers } from "./createPlayers";
+import type { Player } from "./types/player.interface";
 import type { Team } from "./types/team.interface";
 import { getRandomNumber, getRandomNumberBetween } from "./utils/random";
 
@@ -17,6 +18,8 @@ export function simulateGame(): GameResults {
       fieldGoalsMade: 0,
       threePointAttempts: 0,
       threePointMakes: 0,
+      freeThrowAttempts: 0,
+      freeThrowMakes: 0,
       pointsPerQuarter: [],
     },
   };
@@ -30,6 +33,8 @@ export function simulateGame(): GameResults {
       fieldGoalsMade: 0,
       threePointAttempts: 0,
       threePointMakes: 0,
+      freeThrowAttempts: 0,
+      freeThrowMakes: 0,
       pointsPerQuarter: [],
     },
   };
@@ -81,8 +86,83 @@ export function simulateGame(): GameResults {
 }
 
 function simPossession(offense: Team, quarter: number): void {
-  let totalScoring = 0;
   const players = offense.players;
+
+  const player = whoShoots(players);
+
+  player.stats.fieldGoalAttempts++;
+  offense.stats.fieldGoalAttempts++;
+
+  if (getRandomNumberBetween(0, 1000) < player.attributes.twoPointTendency) {
+    const isFouled = checkForFoul(true);
+    if (getRandomNumberBetween(0, 1000) <= player.attributes.twoPointShooting) {
+      offense.stats.points += 2;
+      player.stats.points += 2;
+      player.stats.fieldGoalsMade++;
+      offense.stats.fieldGoalsMade++;
+
+      offense.stats.pointsPerQuarter[quarter - 1] += 2;
+
+      if (isFouled) {
+        shootFreeThrows(player, offense, 1);
+      }
+    } else if (isFouled) {
+      // if player is fouled, the shot attempt doesn't count
+      player.stats.fieldGoalAttempts--;
+      offense.stats.fieldGoalAttempts--;
+      shootFreeThrows(player, offense, 2);
+    }
+  } else {
+    const isFouled = checkForFoul(false);
+
+    player.stats.threePointAttempts++;
+    offense.stats.threePointAttempts++;
+
+    if (
+      getRandomNumberBetween(0, 1000) <= player.attributes.threePointShooting
+    ) {
+      offense.stats.points += 3;
+      player.stats.points += 3;
+      player.stats.fieldGoalsMade++;
+      offense.stats.fieldGoalsMade++;
+      player.stats.threePointMakes++;
+      offense.stats.threePointMakes++;
+
+      offense.stats.pointsPerQuarter[quarter - 1] += 3;
+
+      if (isFouled) {
+        shootFreeThrows(player, offense, 1);
+      }
+    } else if (isFouled) {
+      player.stats.threePointAttempts--;
+      player.stats.fieldGoalAttempts--;
+      offense.stats.threePointAttempts--;
+      offense.stats.fieldGoalAttempts--;
+      shootFreeThrows(player, offense, 3);
+    }
+  }
+}
+
+function checkForFoul(isTwo: boolean): boolean {
+  if (isTwo) {
+    return getRandomNumberBetween(0, 1000) < 350;
+  }
+  return getRandomNumberBetween(0, 1000) < 50;
+}
+
+function shootFreeThrows(player: Player, offense: Team, amount: number): void {
+  for (let i = 0; i < amount; i++) {
+    player.stats.freeThrowAttempts++;
+    offense.stats.freeThrowAttempts++;
+    if (getRandomNumberBetween(0, 1000) < player.attributes.freeThrowShooting) {
+      player.stats.freeThrowMakes++;
+      offense.stats.freeThrowMakes++;
+    }
+  }
+}
+
+function whoShoots(players: Player[]): Player {
+  let totalScoring = 0;
   for (let i = 0; i < players.length; i++) {
     totalScoring += players[i].attributes.scoring;
   }
@@ -101,37 +181,5 @@ function simPossession(offense: Team, quarter: number): void {
     }
   }
 
-  player.stats.fieldGoalAttempts++;
-  offense.stats.fieldGoalAttempts++;
-
-  if (getRandomNumberBetween(0, 1000) < player.attributes.twoPointTendency) {
-    if (
-      getRandomNumberBetween(0, 1000) <=
-      player.attributes.twoPointShootingPercentage
-    ) {
-      offense.stats.points += 2;
-      player.stats.points += 2;
-      player.stats.fieldGoalsMade++;
-      offense.stats.fieldGoalsMade++;
-
-      offense.stats.pointsPerQuarter[quarter - 1] += 2;
-    }
-  } else {
-    player.stats.threePointAttempts++;
-    offense.stats.threePointAttempts++;
-
-    if (
-      getRandomNumberBetween(0, 1000) <=
-      player.attributes.threePointShootingPercentage
-    ) {
-      offense.stats.points += 3;
-      player.stats.points += 3;
-      player.stats.fieldGoalsMade++;
-      offense.stats.fieldGoalsMade++;
-      player.stats.threePointMakes++;
-      offense.stats.threePointMakes++;
-
-      offense.stats.pointsPerQuarter[quarter - 1] += 3;
-    }
-  }
+  return player;
 }

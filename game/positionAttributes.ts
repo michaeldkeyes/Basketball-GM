@@ -3,56 +3,66 @@ import { Position } from "./types/positions.enum";
 export default [
   {
     position: Position.PG,
-    twoPointShootingPercentageMin: 350,
-    twoPointShootingPercentageMax: 550, // 24.75
-    threePointShootingPercentageMin: 300,
-    threePointShootingPercentageMax: 450, //25.3125
+    twoPointShootingMin: 350,
+    twoPointShootingMax: 550, // 24.75
+    threePointShootingMin: 300,
+    threePointShootingMax: 450, //25.3125
     threePointTendencyMin: 300,
     threePointTendencyMax: 600,
+    freeThrowShootingMin: 700,
+    freeThrowShootingMax: 900,
     // average scoring: 50.0625
   },
   // SG
   {
     position: Position.SG,
-    twoPointShootingPercentageMin: 350,
-    twoPointShootingPercentageMax: 570, //27.6
-    threePointShootingPercentageMin: 300,
-    threePointShootingPercentageMax: 450, //22.5
+    twoPointShootingMin: 350,
+    twoPointShootingMax: 570, //27.6
+    threePointShootingMin: 300,
+    threePointShootingMax: 450, //22.5
     threePointTendencyMin: 200,
     threePointTendencyMax: 600,
+    freeThrowShootingMin: 650,
+    freeThrowShootingMax: 900,
     // average scoring: 50.1
   },
   // SF
   {
     position: Position.SF,
-    twoPointShootingPercentageMin: 400,
-    twoPointShootingPercentageMax: 600, // 32.5
-    threePointShootingPercentageMin: 270,
-    threePointShootingPercentageMax: 400, //17.58
+    twoPointShootingMin: 400,
+    twoPointShootingMax: 600, // 32.5
+    threePointShootingMin: 270,
+    threePointShootingMax: 400, //17.58
     threePointTendencyMin: 200,
     threePointTendencyMax: 500,
+    freeThrowShootingMin: 600,
+    freeThrowShootingMax: 850,
     // average scoring: 50.08
   },
   // PF
   {
     position: Position.PF,
-    twoPointShootingPercentageMin: 352,
-    twoPointShootingPercentageMax: 650, // 47.59
-    threePointShootingPercentageMin: 250,
-    threePointShootingPercentageMax: 370, //2.32
+    twoPointShootingMin: 352,
+    twoPointShootingMax: 650, // 47.59
+    threePointShootingMin: 250,
+    threePointShootingMax: 370, //2.32
     threePointTendencyMin: 0,
     threePointTendencyMax: 100,
+    freeThrowShootingMin: 600,
+    freeThrowShootingMax: 800,
     // average scoring: 49.91
   },
   // C
   {
     position: Position.C,
-    twoPointShootingPercentageMin: 352,
-    twoPointShootingPercentageMax: 650,
-    threePointShootingPercentageMin: 100,
-    threePointShootingPercentageMax: 250, //.12
+    twoPointShootingMin: 352,
+    twoPointShootingMax: 650,
+    threePointShootingMin: 100,
+    threePointShootingMax: 250, //.12
     threePointTendencyMin: 0,
     threePointTendencyMax: 10,
+    freeThrowShootingMin: 500,
+    freeThrowShootingMax: 750,
     // average scoring: 49.9
   },
 ];

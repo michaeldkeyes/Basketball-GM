@@ -7,7 +7,7 @@ interface Props {
 
 defineProps<Props>();
 
-const headers = ["Player", "Position", "FG", "FG%", "3P", "Points"];
+const headers = ["Player", "Position", "FG", "FG%", "3P", "FT", "Points"];
 </script>
 
 <template>
@@ -28,15 +28,15 @@ const headers = ["Player", "Position", "FG", "FG%", "3P", "Points"];
       <tbody class="border-y-2 border-solid border-black">
         <template v-for="(player, index) in team.players" :key="index">
           <tr :class="index % 2 === 0 ? 'bg-slate-900' : 'bg-gray-800'">
-            <td class="px-4 py-2">{{ player.name }}</td>
-            <td class="px-4 py-2">{{ player.position }}</td>
-            <td class="px-4 py-2">
+            <td class="px-2 py-1">{{ player.name }}</td>
+            <td class="px-2 py-1">{{ player.position }}</td>
+            <td class="px-2 py-1">
               {{ player.stats.fieldGoalsMade }} -
               {{ player.stats.fieldGoalAttempts }} ({{
-                player.attributes.twoPointShootingPercentage / 10
+                player.attributes.twoPointShooting / 10
               }})
             </td>
-            <td class="px-4 py-2">
+            <td class="px-2 py-1">
               {{
                 (
                   (player.stats.fieldGoalsMade /
@@ -45,69 +45,49 @@ const headers = ["Player", "Position", "FG", "FG%", "3P", "Points"];
                 ).toFixed(1)
               }}%
             </td>
-            <td class="px-4 py-2">
+            <td class="px-2 py-1">
               {{ player.stats.threePointMakes }} -
               {{ player.stats.threePointAttempts }} ({{
-                player.attributes.threePointShootingPercentage / 10
+                player.attributes.threePointShooting / 10
               }})
             </td>
-            <td class="px-4 py-2">{{ player.stats.points }}</td>
+            <td class="px-2 py-1">
+              {{ player.stats.freeThrowMakes }} -
+              {{ player.stats.freeThrowAttempts }} ({{
+                player.attributes.freeThrowShooting / 10
+              }})
+            </td>
+            <td class="px-2 py-1">{{ player.stats.points }}</td>
           </tr>
         </template>
       </tbody>
       <tfoot class="bg-slate-800">
         <tr>
-          <td class="px-4 py-2">Totals</td>
-          <td class="px-4 py-2" />
-          <td class="px-4 py-2">
-            {{
-              team.players.reduce(
-                (acc, player) => acc + player.stats.fieldGoalsMade,
-                0,
-              )
-            }}
+          <td class="px-2 py-1">Totals</td>
+          <td class="px-2 py-1" />
+          <td class="px-2 py-1">
+            {{ team.stats.fieldGoalsMade }}
             -
-            {{
-              team.players.reduce(
-                (acc, player) => acc + player.stats.fieldGoalAttempts,
-                0,
-              )
-            }}
+            {{ team.stats.fieldGoalAttempts }}
           </td>
-          <td class="px-4 py-2">
+          <td class="px-2 py-1">
             {{
               (
-                (team.players.reduce(
-                  (acc, player) => acc + player.stats.fieldGoalsMade,
-                  0,
-                ) /
-                  team.players.reduce(
-                    (acc, player) => acc + player.stats.fieldGoalAttempts,
-                    0,
-                  )) *
+                (team.stats.fieldGoalsMade / team.stats.fieldGoalAttempts) *
                 100
               ).toFixed(1)
             }}%
           </td>
-          <td class="px-4 py-2">
-            {{
-              team.players.reduce(
-                (acc, player) => acc + player.stats.threePointMakes,
-                0,
-              )
-            }}
+          <td class="px-2 py-1">
+            {{ team.stats.threePointMakes }}
             -
-            {{
-              team.players.reduce(
-                (acc, player) => acc + player.stats.threePointAttempts,
-                0,
-              )
-            }}
+            {{ team.stats.threePointAttempts }}
           </td>
-          <td class="px-4 py-2">
-            {{
-              team.players.reduce((acc, player) => acc + player.stats.points, 0)
-            }}
+          <td class="px-2 py-1">
+            {{ team.stats.freeThrowMakes }} - {{ team.stats.freeThrowAttempts }}
+          </td>
+          <td class="px-2 py-1">
+            {{ team.stats.points }}
           </td>
         </tr>
       </tfoot>

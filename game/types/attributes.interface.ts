@@ -1,7 +1,8 @@
 export interface Attributes {
-  twoPointShootingPercentage: number;
-  threePointShootingPercentage: number;
+  twoPointShooting: number;
+  threePointShooting: number;
   twoPointTendency: number;
   threePointTendency: number;
   scoring: number;
+  freeThrowShooting: number;
 }

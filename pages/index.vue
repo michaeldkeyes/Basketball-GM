@@ -9,29 +9,9 @@ const result = ref<GameResults | null>(null);
 </script>
 
 <template>
-  <div class="bg-slate-800 text-white">
+  <div class="h-screen bg-slate-800 text-white">
     <div>
       <ul>
-        <li class="flex">
-          <input type="checkbox" />
-          <p>Create a table component</p>
-        </li>
-        <li class="flex">
-          <input type="checkbox" />
-          <p>Add FGA / FGM</p>
-        </li>
-        <li class="flex">
-          <input type="checkbox" />
-          <p>Gametime & shotclock</p>
-        </li>
-        <li class="flex">
-          <input type="checkbox" />
-          <p>Team points scored per quarter table</p>
-        </li>
-        <li class="flex">
-          <input type="checkbox" />
-          <p>Overtime</p>
-        </li>
         <li class="flex">
           <input type="checkbox" />
           <p>Player positions & Shot selection</p>

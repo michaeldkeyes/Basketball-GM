@@ -10,18 +10,22 @@ export function createPlayers(): Player[] {
       name: "player" + Math.floor(Math.random() * 1000),
       position: position.position,
       attributes: {
-        twoPointShootingPercentage: getRandomNumberBetween(
-          position.twoPointShootingPercentageMin,
-          position.twoPointShootingPercentageMax,
+        twoPointShooting: getRandomNumberBetween(
+          position.twoPointShootingMin,
+          position.twoPointShootingMax,
         ),
-        threePointShootingPercentage: getRandomNumberBetween(
-          position.threePointShootingPercentageMin,
-          position.threePointShootingPercentageMax,
+        threePointShooting: getRandomNumberBetween(
+          position.threePointShootingMin,
+          position.threePointShootingMax,
         ),
         twoPointTendency: 0,
         threePointTendency: getRandomNumberBetween(
           position.threePointTendencyMin,
           position.threePointTendencyMax,
+        ),
+        freeThrowShooting: getRandomNumberBetween(
+          position.freeThrowShootingMin,
+          position.freeThrowShootingMax,
         ),
         scoring: 0,
       },
@@ -31,6 +35,8 @@ export function createPlayers(): Player[] {
         fieldGoalsMade: 0,
         threePointAttempts: 0,
         threePointMakes: 0,
+        freeThrowAttempts: 0,
+        freeThrowMakes: 0,
       },
     };
 
@@ -39,9 +45,9 @@ export function createPlayers(): Player[] {
 
     // give player a scoring attribute based on their overall shooting percentage and tendency
     player.attributes.scoring = Math.round(
-      (player.attributes.twoPointShootingPercentage / 10) *
+      (player.attributes.twoPointShooting / 10) *
         (player.attributes.twoPointTendency / 1000) +
-        (player.attributes.threePointShootingPercentage / 10) *
+        (player.attributes.threePointShooting / 10) *
           (player.attributes.threePointTendency / 1000),
     );
 

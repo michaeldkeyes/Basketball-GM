@@ -4,6 +4,8 @@ export interface Stats {
   fieldGoalsMade: number;
   threePointAttempts: number;
   threePointMakes: number;
+  freeThrowAttempts: number;
+  freeThrowMakes: number;
 }
 
 export interface TeamStats extends Stats {
